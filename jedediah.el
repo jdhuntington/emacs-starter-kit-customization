@@ -43,7 +43,7 @@
 
 (require 'muse-mode)
 (setq muse-project-alist
-      '(("mywiki" ("~/wiki" :default "index"))))
+      '(("mywiki" ("~/Dropbox/wiki" :default "index"))))
 (setq muse-file-extension nil
       muse-mode-auto-p t)
 (add-hook 'find-file-hooks 'muse-mode-maybe)
@@ -69,6 +69,8 @@
 (global-set-key (kbd "C-c a") 'ack)
 
 (global-set-key (kbd "<f5>") 'ruby-compilation-this-buffer)
+(global-set-key (kbd "<f6>") 'rspec-verify)
+(global-set-key (kbd "S-<f6>") 'rspec-verify-single)
 
 ;;; scratchish
 

@@ -30,6 +30,13 @@
 (defun jlh-insert-hashrocket ()
   (interactive) (insert " => "))
 
+(defun jlh-sort-buffer ()
+  "Sorts While Buffer"
+  (interactive)
+  (save-excursion
+    (mark-whole-buffer)
+    (sort-lines)))
+
 (setq default-frame-alist
       '((cursor-type . bar)
         (font . "-apple-monaco-medium-r-normal--15-140-72-72-m-140-iso10646-1")))
@@ -50,6 +57,8 @@
 
 (require 'key-chord)
 (key-chord-mode 1)
+
+(display-time-mode 1)
 
 (key-chord-define-global "ty" 'dabbrev-expand)
 (key-chord-define-global "f;" 'jlh-insert-hashrocket)

@@ -1,6 +1,6 @@
 (defun custom-add-exec-path (path)
   (progn
-    (setenv "PATH" (concat (getenv "PATH") ":" path))
+    (setenv "PATH" (concat path ":" (getenv "PATH")))
     (setq exec-path (cons path exec-path))))
 
 (custom-add-exec-path "/Users/jedediah/homebrew/bin")
@@ -20,6 +20,18 @@
                                                             (point))))
     (yank)))
 
+
+(defun my-ido-find-tag ()
+  "Find a tag using ido"
+  (interactive)
+  (tags-completion-table)
+  (let (tag-names)
+    (mapc (lambda (x)
+            (unless (integerp x)
+              (push (prin1-to-string x t) tag-names)))
+          tags-completion-table)
+    (find-tag (ido-completing-read "Tag: " tag-names))))
+
 (defun indent-whole-buffer ()
   "Indent Whole Buffer"
   (interactive)
@@ -37,6 +49,31 @@
     (mark-whole-buffer)
     (sort-lines)))
 
+
+(defun rename-file-and-buffer ()
+  "Renames current buffer and file it is visiting."
+  (interactive)
+  (let ((name (buffer-name))
+        (filename (buffer-file-name)))
+    (if (not (and filename (file-exists-p filename)))
+        (message "Buffer '%s' is not visiting a file!" name)
+      (let ((new-name (read-file-name "New name: " filename)))
+        (cond ((get-buffer new-name)
+               (message "A buffer named '%s' already exists!" new-name))
+              (t
+               (rename-file filename new-name 1)
+               (rename-buffer new-name)
+               (set-visited-file-name new-name)
+               (set-buffer-modified-p nil)))))))
+
+(fset 'jlh-recenter-top
+      "\C-u0\C-l")
+
+(fset 'jlh-next-section
+      [?\C-x ?n ?w ?\C-s ?\; ?\; ?  ?- ?- ?- ?- ?\C-s ?\C-a ?\C-  ?\C-r ?\C-r ?\C-e ?\C-x ?n ?n ?\C- ])
+
+
+
 (setq default-frame-alist
       '((cursor-type . bar)
         (font . "-apple-monaco-medium-r-normal--15-140-72-72-m-140-iso10646-1")))
@@ -44,9 +81,9 @@
 (global-auto-revert-mode t)
 (server-start)
 
+(require 'mode-compile)
 (require 'smex)
 (smex-initialize)
-(require 'mode-compile)
 
 (require 'muse-mode)
 (setq muse-project-alist
@@ -76,10 +113,12 @@
 (global-set-key (kbd "C-z") 'execute-extended-command)
 (global-set-key (kbd "M-x") 'smex)
 (global-set-key (kbd "C-c a") 'ack)
-
 (global-set-key (kbd "<f5>") 'ruby-compilation-this-buffer)
 (global-set-key (kbd "<f6>") 'rspec-verify)
 (global-set-key (kbd "S-<f6>") 'rspec-verify-single)
+(global-set-key (kbd "<f7>") 'jlh-recenter-top)
+(global-set-key (kbd "S-<f7>") 'jlh-next-section)
+
 
 ;;; scratchish
 
@@ -95,4 +134,11 @@
 (add-to-list 'auto-mode-alist '("\\.[hg]s$"  . haskell-mode))
 (add-to-list 'auto-mode-alist '("\\.hi$"     . haskell-mode))
 (add-to-list 'auto-mode-alist '("\\.l[hg]s$" . literate-haskell-mode))
+
+
+(autoload 'run-prolog "prolog" "Start a Prolog sub-process." t)
+(autoload 'prolog-mode "prolog" "Major mode for editing Prolog programs." t)
+(setq prolog-system 'swi)
+(setq auto-mode-alist (append '(("\\.pl$" . prolog-mode))
+                               auto-mode-alist))
 

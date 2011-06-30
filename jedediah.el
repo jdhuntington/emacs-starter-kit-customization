@@ -20,6 +20,26 @@
                                                             (point))))
     (yank)))
 
+(defun jlh-join-lines (arg)
+  "Join this line to the line above n times
+Running this command with an argument of 1 is equivalent
+to running 'delete-indentation (aka 'join-line)."
+  (interactive "NHow many lines to join?: ")
+  (while (> arg 0)
+    (join-line)
+    (setq arg (- arg 1))))
+
+(defun jlh-curly-wrap ()
+  (interactive)
+  (save-excursion
+    (if (> (point) (mark))
+        (exchange-point-and-mark))
+    (insert "{")
+    (exchange-point-and-mark)
+    (insert "}")))
+
+(add-hook 'after-save-hook
+  'executable-make-buffer-file-executable-if-script-p)
 
 (defun my-ido-find-tag ()
   "Find a tag using ido"
@@ -81,6 +101,8 @@
 (global-auto-revert-mode t)
 (server-start)
 
+;; (add-hook 'ruby-mode-hook 'esk-paredit-nonlisp)
+
 (require 'mode-compile)
 (require 'smex)
 (smex-initialize)
@@ -114,10 +136,12 @@
 (global-set-key (kbd "M-x") 'smex)
 (global-set-key (kbd "C-c a") 'ack)
 (global-set-key (kbd "<f5>") 'ruby-compilation-this-buffer)
+(global-set-key (kbd "S-<f5>") 'other-frame)
 (global-set-key (kbd "<f6>") 'rspec-verify)
 (global-set-key (kbd "S-<f6>") 'rspec-verify-single)
 (global-set-key (kbd "<f7>") 'jlh-recenter-top)
 (global-set-key (kbd "S-<f7>") 'jlh-next-section)
+(global-set-key (kbd "C-c ^") 'jlh-join-lines)
 
 
 ;;; scratchish
@@ -142,3 +166,35 @@
 (setq auto-mode-alist (append '(("\\.pl$" . prolog-mode))
                                auto-mode-alist))
 
+(add-to-list 'load-path "~/.emacs.d/elpa-to-submit/rspec-mode/")
+(require 'rspec-mode)
+
+;; from http://www.masteringemacs.org/articles/2011/01/27/find-files-faster-recent-files-package/
+(require 'recentf)
+ 
+(recentf-mode t)
+(setq recentf-max-saved-items 500)
+ 
+(defun ido-recentf-open ()
+  "Use `ido-completing-read' to \\[find-file] a recent file"
+  (interactive)
+  (if (find-file (ido-completing-read "Find recent file: " recentf-list))
+      (message "Opening file...")
+    (message "Aborting")))
+
+ 
+;; get rid of `find-file-read-only' and replace it with something
+;; more useful.
+
+(global-set-key (kbd "C-x C-r") 'ido-recentf-open)
+
+
+;; (add-to-list 'load-path "~/.emacs.d/elpa-to-submit/anything-config/")
+;; (require 'anything-startup)
+
+(add-hook 'html-mode-hook 'run-coding-hook)
+(add-hook 'ack-mode-hook 'run-coding-hook)
+
+(put 'narrow-to-region 'disabled nil)
+(put 'ido-exit-minibuffer 'disabled nil)
+(put 'downcase-region 'disabled nil)

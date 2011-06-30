@@ -1,0 +1,10 @@
+commit 82a5a7a5227300b8d78c8057fc7d7f13ff32dad2
+Author: Thierry Volpiatto <thierry.volpiatto@gmail.com>
+Date:   Tue Jan 11 19:04:38 2011 +0100
+
+    * anything-config.el Move anything-current-prefix-arg on top of file. No code change.
+
+diff --git a/anything-config.el b/anything-config.el
+index f6cd5ff..cdd42ab 100644
+--- a/anything-config.el
++++ b/anything-config.el

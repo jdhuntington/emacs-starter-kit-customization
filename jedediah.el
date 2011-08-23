@@ -97,7 +97,11 @@ to running 'delete-indentation (aka 'join-line)."
 (setq default-frame-alist
       '((cursor-type . bar)
         (font . "-apple-Droid_Sans_Mono-medium-normal-normal-*-15-*-*-*-m-0-fontset-auto3")))
-(color-theme-blackboard)
+
+(add-to-list 'load-path "~/.emacs.d/elpa-to-submit/emacs-color-theme-solarized/")
+(require 'solarized-definitions)
+(create-solarized-theme light)
+
 (global-auto-revert-mode t)
 (server-start)
 
@@ -190,6 +194,10 @@ to running 'delete-indentation (aka 'join-line)."
 
 ;; (add-to-list 'load-path "~/.emacs.d/elpa-to-submit/anything-config/")
 ;; (require 'anything-startup)
+
+(add-to-list 'load-path "~/.emacs.d/elpa-to-submit/rhtml")
+(require 'rhtml-mode)
+
 
 (add-hook 'html-mode-hook 'run-coding-hook)
 (add-hook 'ack-mode-hook 'run-coding-hook)

@@ -96,7 +96,7 @@ to running 'delete-indentation (aka 'join-line)."
 
 (setq default-frame-alist
       '((cursor-type . bar)
-        (font . "-apple-monaco-medium-r-normal--15-140-72-72-m-140-iso10646-1")))
+        (font . "-apple-Droid_Sans_Mono-medium-normal-normal-*-15-*-*-*-m-0-fontset-auto3")))
 (color-theme-blackboard)
 (global-auto-revert-mode t)
 (server-start)
@@ -119,7 +119,6 @@ to running 'delete-indentation (aka 'join-line)."
 
 (display-time-mode 1)
 
-(key-chord-define-global "ty" 'dabbrev-expand)
 (key-chord-define-global "f;" 'jlh-insert-hashrocket)
 
 (global-unset-key (kbd "C-;"))

@@ -4,7 +4,21 @@
     (setq exec-path (cons path exec-path))))
 
 (custom-add-exec-path "/Users/jedediah/homebrew/bin")
-(custom-add-exec-path "/www/bin")
+(custom-add-exec-path "/usr/local/bin")
+
+(setenv "IM_OK_WITH_MY_PATH_THANK_YOU_VERY_MUCH" "YOU_KNOW_IT")
+
+;; On OSX, /etc/profile calls `/usr/libexec/path_helper -s`, which is
+;; really harshing my mellow lately. Modify /etc/profile as follows:
+;; 3,5c3
+;; < 
+;; < if [ "x" = "x${IM_OK_WITH_MY_PATH_THANK_YOU_VERY_MUCH}" ]; then
+;; <     if [ -x /usr/libexec/path_helper ]; then
+;; ---
+;; > if [ -x /usr/libexec/path_helper ]; then
+;; 7d4
+;; <     fi
+
 
 (defun jlh-duplicate-this-line ()
   "Duplicates the line point is on. With prefix arg, duplicate current line this many times."
@@ -98,9 +112,9 @@ to running 'delete-indentation (aka 'join-line)."
       '((cursor-type . bar)
         (font . "-apple-Droid_Sans_Mono-medium-normal-normal-*-15-*-*-*-m-0-fontset-auto3")))
 
-(add-to-list 'load-path "~/.emacs.d/elpa-to-submit/emacs-color-theme-solarized/")
-(require 'solarized-definitions)
-(create-solarized-theme light)
+;; (add-to-list 'load-path "~/.emacs.d/elpa-to-submit/emacs-color-theme-solarized/")
+;; (require 'solarized-definitions)
+;; (create-solarized-theme light)
 
 (global-auto-revert-mode t)
 (server-start)
@@ -188,15 +202,10 @@ to running 'delete-indentation (aka 'join-line)."
  
 ;; get rid of `find-file-read-only' and replace it with something
 ;; more useful.
-
 (global-set-key (kbd "C-x C-r") 'ido-recentf-open)
 
-
-;; (add-to-list 'load-path "~/.emacs.d/elpa-to-submit/anything-config/")
-;; (require 'anything-startup)
-
-(add-to-list 'load-path "~/.emacs.d/elpa-to-submit/rhtml")
-(require 'rhtml-mode)
+;; (add-to-list 'load-path "~/.emacs.d/elpa-to-submit/rhtml")
+;; (require 'rhtml-mode)
 
 
 (add-hook 'html-mode-hook 'run-coding-hook)
@@ -205,3 +214,24 @@ to running 'delete-indentation (aka 'join-line)."
 (put 'narrow-to-region 'disabled nil)
 (put 'ido-exit-minibuffer 'disabled nil)
 (put 'downcase-region 'disabled nil)
+
+
+
+; (if (file-exists-p "/Users/jedediah/.rvm/rubies/ruby-1.9.3-p194/bin/ruby")
+;     (setq flymake-ruby-command-name "/Users/jedediah/.rvm/rubies/ruby-1.9.3-p194/bin/ruby")
+;   (setq flymake-ruby-command-name "ruby"))
+; 
+; (defun flymake-ruby-init ()
+;   (let* ((temp-file (flymake-init-create-temp-buffer-copy
+;                      'flymake-create-temp-inplace))
+;          (local-file (file-relative-name
+;                       temp-file
+;                       (file-name-directory buffer-file-name))))
+;     ;; Invoke ruby with '-c' to get syntax checking
+;     (list flymake-ruby-command-name (list "-c" local-file))))
+
+(add-to-list 'auto-mode-alist '("\\.json$"  . json-mode))
+
+(require 'keyfreq)
+(keyfreq-mode 1)
+(keyfreq-autosave-mode 1)

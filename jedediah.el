@@ -100,6 +100,11 @@ to running 'delete-indentation (aka 'join-line)."
                (set-visited-file-name new-name)
                (set-buffer-modified-p nil)))))))
 
+(defun jlh-have-package (package-name)
+  "Ensures that a package is present, or installs it."
+  (when (not (package-installed-p package-name))
+    (package-install package-name)))
+
 (fset 'jlh-recenter-top
       "\C-u0\C-l")
 
@@ -120,6 +125,39 @@ to running 'delete-indentation (aka 'join-line)."
 (server-start)
 
 ;; (add-hook 'ruby-mode-hook 'esk-paredit-nonlisp)
+
+(jlh-have-package 'expand-region)
+(jlh-have-package 'fill-column-indicator)
+(jlh-have-package 'find-file-in-project)
+(jlh-have-package 'findr)
+(jlh-have-package 'full-ack)
+(jlh-have-package 'gh)
+(jlh-have-package 'gist)
+(jlh-have-package 'idle-highlight-mode)
+(jlh-have-package 'inf-ruby)
+(jlh-have-package 'inflections)
+(jlh-have-package 'jump)
+(jlh-have-package 'keyfreq)
+(jlh-have-package 'logito)
+(jlh-have-package 'magit)
+(jlh-have-package 'magit-gh-pulls)
+(jlh-have-package 'magithub)
+(jlh-have-package 'mode-compile)
+(jlh-have-package 'muse)
+(jlh-have-package 'pcache)
+(jlh-have-package 'rinari)
+(jlh-have-package 'rspec-mode)
+(jlh-have-package 'ruby-block)
+(jlh-have-package 'ruby-compilation)
+(jlh-have-package 'ruby-electric)
+(jlh-have-package 'ruby-end)
+(jlh-have-package 'ruby-mode)
+(jlh-have-package 'ruby-test-mode)
+(jlh-have-package 'ruby-tools)
+(jlh-have-package 'rvm)
+(jlh-have-package 'smex)
+(jlh-have-package 'yaml-mode)
+
 
 (require 'mode-compile)
 (require 'smex)
@@ -147,7 +185,7 @@ to running 'delete-indentation (aka 'join-line)."
 (global-set-key (kbd "C-;") 'jlh-insert-hashrocket)
 (global-set-key (kbd "C-\\") 'dabbrev-expand)
 (global-set-key (kbd "C-x C-o") 'jlh-duplicate-this-line)
-(key-chord-define-global "xo" 'jlh-duplicate-this-line)
+;; (key-chord-define-global "xo" 'jlh-duplicate-this-line)
 (global-set-key (kbd "C-x t") 'indent-whole-buffer)
 (global-set-key (kbd "C-z") 'execute-extended-command)
 (global-set-key (kbd "M-x") 'smex)
